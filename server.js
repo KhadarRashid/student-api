@@ -7,14 +7,14 @@ let api_routes = require("./routes/api.js")
 let app = express()
 
 
-app.use(express.static(path.join(__dirname, "student-sign-in-clint", "dist" )))
+app.use(express.static(path.join(__dirname, "student-sign-in-client", "dist" )))
 
 app.use(bodyParser.json())
 
 app.use("/api", api_routes)
 
 app.use(function (req, res, next) {
-    req.status(404).send("Not found")
+    res.status(404).send("Not found")
 
 })
 

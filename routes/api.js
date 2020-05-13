@@ -12,6 +12,16 @@ router.get('/students', function(req, res, next){
     .catch( err => next(err))
 })
 
+router.get('/students/:id', function(req, res, next) {
+    Student.findByPk(req.params.id).then(student => {
+        if (student) {
+            res.json(student)
+        } else {
+            res.status(404).send('Student not found')
+        }
+    }).catch( err => next(err) ) 
+})
+
 router.post('/students', function(req, res, next){
     Student.create( req.body ).then( (data) => {
         return res.status(201).send('success')
@@ -21,10 +31,10 @@ router.post('/students', function(req, res, next){
             return res.status(400).json(messages)
         }
         return next(err)
-    })
+    } )
 })
 
-router.patch("/students.:id", function( req, res, next) {
+router.patch("/students/:id", function( req, res, next) {
     Student.update( req.body, { where: { id: req.params.id} } )
         .then( rowModified => {
             if (!rowModified[0]) {
@@ -42,11 +52,12 @@ router.patch("/students.:id", function( req, res, next) {
 })
 
 
-router.delete("/students.:id", function(req, res, next) {
-    Student.destroy({where: { id: req.parapms.id} } )
+router.delete("/students/:id", function(req, res, next) { 
+    Student.destroy({where: { id: req.params.id} } )
     .then( rowModified => {
         return res.send("ok")
     }).catch( err => next(err) )
 })
+
 
 module.exports = router
